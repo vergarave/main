@@ -1,0 +1,11 @@
+x = 
+from 1 to 5
+for i from 1 to 5 do
+  i + 1
+end
+
+if 3 * 4 > 10 then
+  1 + 2 * 3
+else
+  0
+end
