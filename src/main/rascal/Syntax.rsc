@@ -66,32 +66,36 @@ syntax Loop = "for" Identifier var Range r "do" Body body "end";
 
 syntax PatternBody = Expression lhs "-\>" Expression rhs;
 
-// --- Expresiones (con precedencias)
+// --- Expresiones (con precedencias) - CORREGIDO
 syntax Expression
   = bracket "(" Expression ")"
-  > "-" Expression
+  | Principal
+  | "[" Expression "]"
+  | Invocation
+  > right eNeg: "neg" Expression                    // Usar "neg" en vez de "-"
   > right Expression "**" Expression
   > left (
-      Expression MulOp Expression
+      Expression "*" Expression
+    | Expression "/" Expression
+    | Expression "%" Expression
     )
   > left (
-      Expression AddOp Expression
+      Expression "+" Expression
+    | Expression "-" Expression
     )
   > non-assoc (
-      Expression RelOp Expression
+      Expression "\<=" Expression
+    | Expression "\>=" Expression
+    | Expression "\<\>" Expression
+    | Expression "\<" Expression
+    | Expression "\>" Expression
+    | Expression "=" Expression
     )
   > left Expression "and" Expression
   > left Expression "or" Expression
   > right Expression "-\>" Expression
   > left Expression ":" Expression
-  | Principal
-  | "[" Expression "]"
-  | Invocation
   ;
-
-syntax MulOp = "*" | "/" | "%";
-syntax AddOp = "+" | "-";
-syntax RelOp = "\<=" | "\>=" | "\<\>" | "\<" | "\>" | "=";
 
 syntax Invocation
   = Identifier f "$" "(" Variables? args ")"

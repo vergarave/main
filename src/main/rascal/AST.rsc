@@ -42,9 +42,17 @@ data Expression =
   | eList(Expression)
   | eNeg(Expression)
   | ePow(Expression, Expression)
-  | eMul(Expression, str op, Expression)
-  | eAdd(Expression, str op, Expression)
-  | eRel(Expression, str op, Expression)
+  | eMul(Expression, Expression)     // ✅ Sin str op
+  | eDiv(Expression, Expression)     // ✅ Nuevo
+  | eMod(Expression, Expression)     // ✅ Nuevo
+  | eAdd(Expression, Expression)     // ✅ Sin str op
+  | eSub(Expression, Expression)     // ✅ Nuevo
+  | eLT(Expression, Expression)      // ✅ 
+  | eGT(Expression, Expression)      // ✅ >
+  | eLE(Expression, Expression)      // ✅ <=
+  | eGE(Expression, Expression)      // ✅ >=
+  | eNE(Expression, Expression)      // ✅ <>
+  | eEQ(Expression, Expression)      // ✅ =
   | eAnd(Expression, Expression)
   | eOr(Expression, Expression)
   | eImp(Expression, Expression)

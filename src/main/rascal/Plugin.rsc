@@ -6,11 +6,11 @@ import util::Reflective;
 import util::IDEServices;
 import util::LanguageServer;
 import Relation;
-
 import Syntax;
 import Parser;
 import Implode;
 import Evaluator;
+import AST;
 
 PathConfig pcfg = getProjectPathConfig(|project://alu|);
 Language aluLang = language(pcfg, "ALU", "alu", "Plugin", "contribs");
@@ -22,13 +22,13 @@ set[LanguageService] contribs() = {
     return parse(#start[Module], program, src);
   }),
   lenses(rel[loc src, Command lens] (start[Module] p) {
-    return { <p.src, run(p.top, title="Run ALU program")> };
+    Module m = implode(#Module, p);
+    return { <p.src, run(m, title="Run ALU program")> };
   }),
   executor(exec)
 };
 
 value exec(run(Module p)) {
-  // genera/ejecuta desde el archivo abierto
   edit(|project://alu/instance/output/last_run.txt|);
   println("Running ALU…");
   result = evalModule(p);
@@ -36,4 +36,7 @@ value exec(run(Module p)) {
   return ("result": true);
 }
 
-void main() { registerLanguage(aluLang); }
+void main() { 
+  registerLanguage(aluLang); 
+  println("ALU language registered!");
+}
