@@ -1,36 +1,29 @@
 module Syntax
 
-// --- Layout & tokens base
 layout Layout = WSorComment* !>> [\ \t\n\r#];
 lexical WSorComment = [\ \t\n\r] | @category="Comment" "#" ![\n]* $;
 
-// --- Palabras reservadas
 keyword KW = "cond" | "do" | "data" | "end" | "for" | "from" | "then"
            | "function" | "else" | "if" | "in" | "iterator" | "sequence"
            | "struct" | "to" | "tuple" | "type" | "with" | "yielding"
-           | "and" | "or" | "neg" | "true" | "false";
+           | "and" | "or" | "neg" | "true" | "false" | "var";
 
-// --- Tokens
 lexical Identifier = ([a-z][a-zA-Z0-9]*) \ KW;
 lexical IntLiteral = [0-9]+;
 lexical FloatLiteral = [0-9]+ "." [0-9]+;
 lexical CharLiteral = [a-z];
 
-// --- Inicio
 start syntax Module = Variables? vars Top* tops;
 
-// --- Top-level declarations
 syntax Top
   = topFun: Function
   | topData: Data
   | topStmt: Statement
   ;
 
-// --- Variables y asignación
 syntax Variables = Identifier name ("," Identifier names)*;
 syntax Assignment = Identifier name "=";
 
-// --- Funciones y data
 syntax Function = 
   Assignment? optAsg "function" ("(" Variables? params ")")? "do" Body body "end" Identifier name;
 
@@ -44,12 +37,10 @@ syntax DataBody
 
 syntax Constructor = Identifier name "=" "struct" "(" Variables fields ")";
 
-// --- Cuerpo y sentencias
 syntax Body = Statement* ss;
 
 syntax Statement
-  = Expression
-  | Variables
+  = Expression              // ← Sin Variables aquí
   | Range
   | Iterator
   | Loop
@@ -66,13 +57,12 @@ syntax Loop = "for" Identifier var Range r "do" Body body "end";
 
 syntax PatternBody = Expression lhs "-\>" Expression rhs;
 
-// --- Expresiones (con precedencias) - CORREGIDO
 syntax Expression
   = bracket "(" Expression ")"
   | Principal
   | "[" Expression "]"
   | Invocation
-  > right eNeg: "neg" Expression                    // Usar "neg" en vez de "-"
+  > right "neg" Expression
   > right Expression "**" Expression
   > left (
       Expression "*" Expression
