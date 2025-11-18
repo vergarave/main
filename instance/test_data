@@ -1,0 +1,8 @@
+p : Point
+
+data : Point with x, y
+  Point = struct (x : Int, y : Int)
+end Point
+
+p.x = 10
+p.y = 20

@@ -1,0 +1,12 @@
+x =
+from 1 to 3
+
+for i from 1 to 3 do
+  i * i
+end
+
+if 2 + 2 = 4 then
+  10
+else
+  0
+end
