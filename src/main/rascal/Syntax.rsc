@@ -10,7 +10,7 @@ keyword KW = "cond" | "do" | "data" | "end" | "for" | "from" | "then"
            | "Int" | "Bool" | "Char" | "Real" | "String";  // ← NUEVOS TIPOS
 
 lexical Identifier = ([a-z][a-zA-Z0-9]*) \ KW;
-lexical TypeName = ([A-Z][a-zA-Z0-9]*) \ KW;  // ← NUEVO
+lexical TypeName = ([A-Z][a-zA-Z0-9]*) \ KW;
 lexical IntLiteral = [0-9]+;
 lexical FloatLiteral = [0-9]+ "." [0-9]+;
 lexical CharLiteral = [a-z];

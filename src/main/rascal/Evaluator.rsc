@@ -9,7 +9,6 @@ import String;
 import util::Math;
 import Implode;
 
-// Valor de runtime
 data Value = VBool(bool b) | VInt(int n) | VReal(real x) | VChar(str c) | VUnit();
 
 alias Env = map[str, Value];
@@ -21,7 +20,6 @@ public void runFile(loc programLoc) {
 
 public Value evalModule(Module m) {
   env = ();
-  // Variables globales iniciales (si hay)
   env = initVars(m.vars, env);
   // Ejecuta tops secuencialmente; retorna último valor (o VUnit)
   Value last = VUnit();
@@ -31,7 +29,6 @@ public Value evalModule(Module m) {
   return last;
 }
 
-// helpers
 private Module loadModule(loc l) {
   return load(l);
 }
@@ -138,7 +135,6 @@ private Value evalPrincipal(Principal p, Env env) {
   return VUnit();
 }
 
-// ---- helpers numéricos
 private Value numNeg(Value v)
   = (v is VInt)  ? VInt(-v.n)
   : (v is VReal) ? VReal(-v.x)
@@ -210,14 +206,14 @@ private Value modulo(Value a, Value b) = VInt(asInt(a) % asInt(b));
 
 private int cmp(Value a, Value b) {
   if (a is VInt && b is VInt) {
-    if (a.n < b.n) return -1;      // ✅ < sin escapar
-    if (a.n > b.n) return 1;       // ✅ > sin escapar
+    if (a.n < b.n) return -1;      // < 
+    if (a.n > b.n) return 1;       // > 
     return 0;
   }
   real ar = asReal(a);
   real br = asReal(b);
-  if (ar < br) return -1;          // ✅ < sin escapar
-  if (ar > br) return 1;           // ✅ > sin escapar
+  if (ar < br) return -1;          //  < 
+  if (ar > br) return 1;           // > 
   return 0;
 }
 
@@ -237,5 +233,5 @@ private real asReal(Value v)
   : (v is VInt)  ? toReal(v.n)
   : error("Real expected");
 
-// Pretty print
+
 public str pp(Value v) = "<v>";

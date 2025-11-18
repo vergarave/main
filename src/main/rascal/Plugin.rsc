@@ -10,13 +10,13 @@ import Syntax;
 import Parser;
 import Implode;
 import Evaluator;
-import Checker;  // ← NUEVO
+import Checker;
 import AST;
 
 PathConfig pcfg = getProjectPathConfig(|project://main|);
 Language aluLang = language(pcfg, "ALU", "alu", "Plugin", "contribs");
 
-data Command = run(Module p) | check(Tree pt);  // ← ACTUALIZADO
+data Command = run(Module p) | check(Tree pt);
 
 set[LanguageService] contribs() = {
   parser(start[Module] (str program, loc src) {
@@ -26,11 +26,11 @@ set[LanguageService] contribs() = {
     Module m = implode(#Module, p);
     return { 
       <p.src, run(m, title="Run ALU program")>,
-      <p.src, check(p, title="Type check")>  // ← NUEVO
+      <p.src, check(p, title="Type check")> 
     };
   }),
   executor(exec),
-  checker(aluChecker)  // ← NUEVO: Integración de TypePal
+  checker(aluChecker)  // Integración de TypePal
 };
 
 value exec(run(Module p)) {

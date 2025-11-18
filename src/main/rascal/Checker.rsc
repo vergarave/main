@@ -75,7 +75,6 @@ TModel checkFunction(fun(optAsg, params, body(stmts), name), TModel tm) {
     // Definir la función
     tm = define(tm, name, functionId(), name, defType(tFunction([], tUnknown())));
     
-    // Nuevo scope para la función
     tm = enterScope(tm, name);
     
     // Definir parámetros
@@ -86,7 +85,6 @@ TModel checkFunction(fun(optAsg, params, body(stmts), name), TModel tm) {
         }
     }
     
-    // Chequear cuerpo
     for (s <- stmts) {
         tm = checkStatement(s, tm);
     }
@@ -95,12 +93,10 @@ TModel checkFunction(fun(optAsg, params, body(stmts), name), TModel tm) {
     return tm;
 }
 
-// Chequear data
 TModel checkData(datos(optAsg, withVars, body, name), TModel tm) {
     // Definir el tipo struct
     tm = define(tm, name, dataId(), name, defType(tStruct(name)));
     
-    // Chequear que las variables usadas en 'with' existan
     vars(wnames) = withVars;
     for (wn <- wnames) {
         tm = use(tm, wn, {variableId()});
@@ -109,7 +105,6 @@ TModel checkData(datos(optAsg, withVars, body, name), TModel tm) {
     return tm;
 }
 
-// Chequear statements
 TModel checkStatement(stExpr(e), TModel tm) = checkExpression(e, tm);
 
 TModel checkStatement(stRange(range(optAsg, from, to)), TModel tm) {
